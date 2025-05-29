@@ -5,7 +5,7 @@
 - [Installation](#installation)
 - [Utilisation basique](#utilisation-basique)
 - [Configuration](#configuration)
-- [Règles de validation](#règles-de-validation)
+- [Règles de validation](#règles-de-validation) 
 - [Messages personnalisés](#messages-personnalisés)
 - [Règles personnalisées](#règles-personnalisées)
 - [Gestion des erreurs](#gestion-des-erreurs)
