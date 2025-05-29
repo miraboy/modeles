@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Développeur Web Mobile & Graphiste</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Animation personnalisée */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Effet de survol personnalisé pour les cartes */
+        .project-card {
+            transition: all 0.3s ease;
+            transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+        }
+        
+        .project-card:hover {
+            transform: perspective(1000px) rotateX(5deg) rotateY(5deg);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        /* Barre de défilement personnalisée */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #3B82F6;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2563EB;
+        }
+        
+        /* Animation d'entrée */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white shadow-md z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold text-blue-600">DEV<span class="text-gray-800">GRAPH</span></span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#accueil" class="text-blue-600 font-medium hover:text-blue-800 transition">Accueil</a>
+                    <a href="#competences" class="text-gray-600 hover:text-blue-600 transition">Compétences</a>
+                    <a href="#portfolio" class="text-gray-600 hover:text-blue-600 transition">Portfolio</a>
+                    <a href="#a-propos" class="text-gray-600 hover:text-blue-600 transition">À propos</a>
+                    <a href="#contact" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Contact</a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="menu-toggle" class="text-gray-600 hover:text-blue-600 focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Menu mobile -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#accueil" class="block px-3 py-2 text-blue-600 font-medium">Accueil</a>
+                <a href="#competences" class="block px-3 py-2 text-gray-600 hover:text-blue-600">Compétences</a>
+                <a href="#portfolio" class="block px-3 py-2 text-gray-600 hover:text-blue-600">Portfolio</a>
+                <a href="#a-propos" class="block px-3 py-2 text-gray-600 hover:text-blue-600">À propos</a>
+                <a href="#contact" class="block px-3 py-2 bg-blue-600 text-white rounded-md text-center">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="accueil" class="pt-24 pb-16 md:pt-32 md:pb-24 bg-gradient-to-r from-blue-50 to-indigo-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0 animate-fade-in">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 mb-4">
+                        Bonjour, je suis <span class="text-blue-600">Alex</span>
+                    </h1>
+                    <h2 class="text-2xl md:text-3xl text-gray-600 mb-6">
+                        Développeur Web Mobile & Graphiste
+                    </h2>
+                    <p class="text-gray-600 mb-8 text-lg">
+                        Je crée des expériences numériques exceptionnelles en combinant développement technique et design créatif.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#portfolio" class="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition shadow-lg">
+                            Voir mon travail
+                        </a>
+                        <a href="#contact" class="border-2 border-blue-600 text-blue-600 px-6 py-3 rounded-md hover:bg-blue-50 transition">
+                            Me contacter
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center animate-fade-in delay-100">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
+                             alt="Développeur et designer" 
+                             class="rounded-lg shadow-2xl w-full max-w-md floating">
+                        <div class="absolute -bottom-5 -right-5 bg-white p-4 rounded-lg shadow-lg">
+                            <div class="flex items-center">
+                                <div class="bg-yellow-400 p-2 rounded-full mr-2">
+                                    <i class="fas fa-medal text-white"></i>
+                                </div>
+                                <span class="font-medium">5+ ans d'expérience</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Compétences Section -->
+    <section id="competences" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Mes Compétences</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Une combinaison unique de compétences techniques en développement et de sensibilité artistique en design.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Compétence 1 -->
+                <div class="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition animate-fade-in delay-100">
+                    <div class="bg-blue-100 w-14 h-14 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-mobile-alt text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Développement Mobile</h3>
+                    <p class="text-gray-600">
+                        Création d'applications natives et hybrides pour iOS et Android avec React Native, Flutter et Swift.
+                    </p>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">React Native</span>
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Flutter</span>
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Swift</span>
+                    </div>
+                </div>
+                
+                <!-- Compétence 2 -->
+                <div class="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition animate-fade-in delay-200">
+                    <div class="bg-indigo-100 w-14 h-14 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-paint-brush text-indigo-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Design Graphique</h3>
+                    <p class="text-gray-600">
+                        Conception d'interfaces utilisateur attrayantes, logos et identités visuelles mémorables.
+                    </p>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">UI/UX</span>
+                        <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">Illustrator</span>
+                        <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">Photoshop</span>
+                    </div>
+                </div>
+                
+                <!-- Compétence 3 -->
+                <div class="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition animate-fade-in delay-300">
+                    <div class="bg-purple-100 w-14 h-14 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-code text-purple-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Développement Web</h3>
+                    <p class="text-gray-600">
+                        Sites web modernes et applications web réactives avec les dernières technologies front-end et back-end.
+                    </p>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">React</span>
+                        <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">Node.js</span>
+                        <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">Tailwind</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Barres de compétences -->
+            <div class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="animate-fade-in delay-400">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-6">Compétences Techniques</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-700">React Native</span>
+                                <span class="text-gray-600">95%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-600 h-2 rounded-full" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-700">UI/UX Design</span>
+                                <span class="text-gray-600">90%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-indigo-600 h-2 rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-700">JavaScript</span>
+                                <span class="text-gray-600">85%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-purple-600 h-2 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="animate-fade-in delay-500">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-6">Compétences Créatives</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-700">Illustration</span>
+                                <span class="text-gray-600">88%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-pink-600 h-2 rounded-full" style="width: 88%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-700">Branding</span>
+                                <span class="text-gray-600">85%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-yellow-500 h-2 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-700">Animation</span>
+                                <span class="text-gray-600">75%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 75%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Mon Portfolio</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Une sélection de mes projets récents en développement mobile et design graphique.
+                </p>
+                
+                <!-- Filtres -->
+                <div class="flex justify-center mt-8 space-x-4">
+                    <button class="filter-btn active px-4 py-2 bg-blue-600 text-white rounded-md" data-filter="all">Tous</button>
+                    <button class="filter-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300" data-filter="mobile">Mobile</button>
+                    <button class="filter-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300" data-filter="design">Design</button>
+                    <button class="filter-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300" data-filter="web">Web</button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Projet 1 -->
+                <div class="project-card portfolio-item mobile" data-category="mobile">
+                    <div class="bg-white rounded-xl overflow-hidden shadow-md h-full flex flex-col">
+                        <div class="relative overflow-hidden h-48">
+                            <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
+                                 alt="Application de fitness" 
+                                 class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                            <div class="absolute inset-0 bg-blue-600 opacity-0 hover:opacity-80 flex items-center justify-center transition-opacity duration-300">
+                                <a href="#" class="text-white font-medium px-4 py-2 border-2 border-white rounded-md hover:bg-white hover:text-blue-600 transition">
+                                    Voir le projet
+                                </a>
+                            </div>
+                        </div>
+                        <div class="p-6 flex-grow">
+                            <div class="flex items-center mb-2">
+                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs mr-2">Mobile</span>
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">React Native</span>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">App Fitness Tracker</h3>
+                            <p class="text-gray-600 mb-4">
+                                Application de suivi d'activité physique avec tableau de bord personnalisé et intégration d'objets connectés.
+                            </p>
+                            <a href="#" class="text-blue-600 font-medium hover:text-blue-800 flex items-center">
+                                En savoir plus
+                                <i class="fas fa-arrow-right ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Projet 2 -->
+                <div class="project-card portfolio-item design" data-category="design">
+                    <div class="bg-white rounded-xl overflow-hidden shadow-md h-full flex flex-col">
+                        <div class="relative overflow-hidden h-48">
+                            <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
+                                 alt="Identité visuelle" 
+                                 class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                            <div class="absolute inset-0 bg-indigo-600 opacity-0 hover:opacity-80 flex items-center justify-center transition-opacity duration-300">
+                                <a href="#" class="text-white font-medium px-4 py-2 border-2 border-white rounded-md hover:bg-white hover:text-indigo-600 transition">
+                                    Voir le projet
+                                </a>
+                            </div>
+                        </div>
+                        <div class="p-6 flex-grow">
+                            <div class="flex items-center mb-2">
+                                <span class="bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full text-xs mr-2">Design</span>
+                                <span class="bg-pink-100 text-pink-800 px-2 py-1 rounded-full text-xs">Branding</span>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Identité Visuelle Café</h3>
+                            <p class="text-gray-600 mb-4">
+                                Création complète d'une identité visuelle pour un café artisanal, incluant logo, packaging et supports marketing.
+                            </p>
+                            <a href="#" class="text-blue-600 font-medium hover:text-blue-800 flex items-center">
+                                En savoir plus
+                                <i class="fas fa-arrow-right ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Projet 3 -->
+                <div class="project-card portfolio-item web" data-category="web">
+                    <div class="bg-white rounded-xl overflow-hidden shadow-md h-full flex flex-col">
+                        <div class="relative overflow-hidden h-48">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
+                                 alt="Plateforme e-learning" 
+                                 class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                            <div class="absolute inset-0 bg-purple-600 opacity-0 hover:opacity-80 flex items-center justify-center transition-opacity duration-300">
+                                <a href="#" class="text-white font-medium px-4 py-2 border-2 border-white rounded-md hover:bg-white hover:text-purple-600 transition">
+                                    Voir le projet
+                                </a>
+                            </div>
+                        </div>
+                        <div class="p-6 flex-grow">
+                            <div class="flex items-center mb-2">
+                                <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs mr-2">Web</span>
+                                <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">React</span>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Plateforme E-Learning</h3>
+                            <p class="text-gray-600 mb-4">
+                                Solution complète d'apprentissage en ligne avec gestion de cours, suivi de progression et évaluations.
+                            </p>
+                            <a href="#" class="text-blue-600 font-medium hover:text-blue-800 flex items-center">
+                                En savoir plus
+                                <i class="fas fa-arrow-right ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Projet 4 -->
+                <div class="project-card portfolio-item mobile" data-category="mobile">
+                    <div class="bg-white rounded-xl overflow-hidden shadow-md h-full flex flex-col">
+                        <div class="relative overflow-hidden h-48">
+                            <img src="https://images.unsplash.com/photo-1581094794329-c811329a3a1c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
+                                 alt="Application bancaire" 
+                                 class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                            <div class="absolute inset-0 bg-blue-600 opacity-0 hover:opacity-80 flex items-center justify-center transition-opacity duration-300">
+                                <a href="#" class="text-white font-medium px-4 py-2 border-2 border-white rounded-md hover:bg-white hover:text-blue-600 transition">
+                                    Voir le projet
+                                </a>
+                            </div>
+                        </div>
+                        <div class="p-6 flex-grow">
+                            <div class="flex items-center mb-2">
+                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs mr-2">Mobile</span>
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">Flutter</span>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">App Bancaire Mobile</h3>
+                            <p class="text-gray-600 mb-4">
+                                Application bancaire sécurisée avec authentification biométrique, gestion de comptes et virements instantanés.
+                            </p>
+                            <a href="#" class="text-blue-600 font-medium hover:text-blue-800 flex items-center">
+                                En savoir plus
+                                <i class="fas fa-arrow-right ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Projet 5 -->
+                <div class="project-card portfolio-item design" data-category="design">
+                    <div class="bg-white rounded-xl overflow-hidden shadow-md h-full flex flex-col">
+                        <div class="relative overflow-hidden h-48">
+                            <img src="https://images.unsplash.com/photo-1467232004584-a241de8b3885?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
+                                 alt="Design d'interface" 
+                                 class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                            <div class="absolute inset-0 bg-indigo-600 opacity-0 hover:opacity-80 flex items-center justify-center transition-opacity duration-300">
+                                <a href="#" class="text-white font-medium px-4 py-2 border-2 border-white rounded-md hover:bg-white hover:text-indigo-600 transition">
+                                    Voir le projet
+                                </a>
+                            </div>
+                        </div>
+                        <div class="p-6 flex-grow">
+                            <div class="flex items-center mb-2">
+                                <span class="bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full text-xs mr-2">Design</span>
+                                <span class="bg-pink-100 text-pink-800 px-2 py-1 rounded-full text-xs">UI/UX</span>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Dashboard Analytics</h3>
+                            <p class="text-gray-600 mb-4">
+                                Conception d'un tableau de bord analytique avec visualisation de données complexes et interface intuitive.
+                            </p>
+                            <a href="#" class="text-blue-600 font-medium hover:text-blue-800 flex items-center">
+                                En savoir plus
+                                <i class="fas fa-arrow-right ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Projet 6 -->
+                <div class="project-card portfolio-item web" data-category="web">
+                    <div class="bg-white rounded-xl overflow-hidden shadow-md h-full flex flex-col">
+                        <div class="relative overflow-hidden h-48">
+                            <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
+                                 alt="Site e-commerce" 
+                                 class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                            <div class="absolute inset-0 bg-purple-600 opacity-0 hover:opacity-80 flex items-center justify-center transition-opacity duration-300">
+                                <a href="#" class="text-white font-medium px-4 py-2 border-2 border-white rounded-md hover:bg-white hover:text-purple-600 transition">
+                                    Voir le projet
+                                </a>
+                            </div>
+                        </div>
+                        <div class="p-6 flex-grow">
+                            <div class="flex items-center mb-2">
+                                <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs mr-2">Web</span>
+                                <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">Vue.js</span>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Boutique en Ligne</h3>
+                            <p class="text-gray-600 mb-4">
+                                Plateforme e-commerce performante avec catalogue produit, panier et paiement sécurisé.
+                            </p>
+                            <a href="#" class="text-blue-600 font-medium hover:text-blue-800 flex items-center">
+                                En savoir plus
+                                <i class="fas fa-arrow-right ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#" class="inline-flex items-center px-6 py-3 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition">
+                    <i class="fas fa-briefcase mr-2"></i>
+                    Voir tous les projets
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- À Propos Section -->
+    <section id="a-propos" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
+                             alt="À propos" 
+                             class="rounded-lg shadow-xl w-full max-w-md">
+                        <div class="absolute -bottom-5 -left-5 bg-white p-4 rounded-lg shadow-lg">
+                            <div class="flex items-center">
+                                <div class="bg-green-500 p-2 rounded-full mr-2">
+                                    <i class="fas fa-check text-white"></i>
+                                </div>
+                                <span class="font-medium">50+ projets réalisés</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 md:pl-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6">À Propos de Moi</h2>
+                    <p class="text-gray-600 mb-6">
+                        Passionné par la technologie et le design depuis mon plus jeune âge, j'ai su combiner ces deux univers pour créer des expériences numériques à la fois belles et fonctionnelles.
+                    </p>
+                    <p class="text-gray-600 mb-8">
+                        Avec plus de 5 ans d'expérience en développement mobile et design graphique, j'ai travaillé avec des startups comme des grandes entreprises, toujours avec le même souci du détail et de l'expérience utilisateur.
+                    </p>
+                    
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Mon Parcours</h3>
+                        <div class="space-y-4">
+                            <div class="flex">
+                                <div class="mr-4">
+                                    <div class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 text-blue-600">
+                                        <i class="fas fa-graduation-cap"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">Master en Design Interactif</h4>
+                                    <p class="text-gray-600 text-sm">École Supérieure d'Art et Design, 2016</p>
+                                </div>
+                            </div>
+                            <div class="flex">
+                                <div class="mr-4">
+                                    <div class="flex items-center justify-center w-10 h-10 rounded-full bg-indigo-100 text-indigo-600">
+                                        <i class="fas fa-briefcase"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">Développeur Front-end</h4>
+                                    <p class="text-gray-600 text-sm">Digital Agency, 2017-2019</p>
+                                </div>
+                            </div>
+                            <div class="flex">
+                                <div class="mr-4">
+                                    <div class="flex items-center justify-center w-10 h-10 rounded-full bg-purple-100 text-purple-600">
+                                        <i class="fas fa-rocket"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">Freelance Full-Stack</h4>
+                                    <p class="text-gray-600 text-sm">Depuis 2019</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="#" class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                        <i class="fas fa-download mr-2"></i>
+                        Télécharger mon CV
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Témoignages Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Ce Qu'ils Disent de Moi</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Retours de clients et collaborateurs avec qui j'ai eu le plaisir de travailler.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Témoignage 1 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-400 mr-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6 italic">
+                        "Alex a transformé notre vision en une application mobile exceptionnelle. Son attention aux détails et sa compréhension de l'expérience utilisateur sont remarquables."
+                    </p>
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="Client" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-medium text-gray-800">Sophie Martin</h4>
+                            <p class="text-gray-600 text-sm">CEO, FitTech Startup</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Témoignage 2 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-400 mr-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6 italic">
+                        "Le branding créé par Alex a parfaitement capturé l'essence de notre marque. Nous avons reçu de nombreux compliments sur notre nouvelle identité visuelle."
+                    </p>
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Client" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-medium text-gray-800">Thomas Leroy</h4>
+                            <p class="text-gray-600 text-sm">Fondateur, Artisan Café</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Témoignage 3 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-400 mr-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6 italic">
+                        "Travailler avec Alex sur notre plateforme e-learning a été un vrai plaisir. Il a su concilier nos exigences techniques avec une interface élégante et intuitive."
+                    </p>
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Client" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-medium text-gray-800">Émilie Dubois</h4>
+                            <p class="text-gray-600 text-sm">Directrice Pédagogique</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-gradient-to-r from-blue-50 to-indigo-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Travaillons Ensemble</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Vous avez un projet en tête ? Discutons-en et donnons vie à vos idées.
+                </p>
+            </div>
+            
+            <div class="flex flex-col lg:flex-row gap-12">
+                <div class="lg:w-1/2">
+                    <form id="contact-form" class="bg-white p-8 rounded-xl shadow-md">
+                        <div class="mb-6">
+                            <label for="name" class="block text-gray-700 font-medium mb-2">Votre Nom</label>
+                            <input type="text" id="name" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="mb-6">
+                            <label for="email" class="block text-gray-700 font-medium mb-2">Votre Email</label>
+                            <input type="email" id="email" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="mb-6">
+                            <label for="subject" class="block text-gray-700 font-medium mb-2">Sujet</label>
+                            <input type="text" id="subject" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="mb-6">
+                            <label for="message" class="block text-gray-700 font-medium mb-2">Votre Message</label>
+                            <textarea id="message" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 transition flex items-center justify-center">
+                            <i class="fas fa-paper-plane mr-2"></i>
+                            Envoyer le message
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="lg:w-1/2">
+                    <div class="bg-white p-8 rounded-xl shadow-md h-full">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-6">Coordonnées</h3>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                    <i class="fas fa-map-marker-alt text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">Adresse</h4>
+                                    <p class="text-gray-600">123 Rue du Développement, 75000 Paris</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="bg-indigo-100 p-3 rounded-full mr-4">
+                                    <i class="fas fa-envelope text-indigo-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">Email</h4>
+                                    <p class="text-gray-600">contact@devgraph.com</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="bg-purple-100 p-3 rounded-full mr-4">
+                                    <i class="fas fa-phone-alt text-purple-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">Téléphone</h4>
+                                    <p class="text-gray-600">+33 6 12 34 56 78</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8">
+                            <h4 class="font-medium text-gray-800 mb-4">Suivez-moi</h4>
+                            <div class="flex space-x-4">
+                                <a href="#" class="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-700 transition">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                                <a href="#" class="bg-blue-400 text-white p-3 rounded-full hover:bg-blue-500 transition">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="#" class="bg-pink-600 text-white p-3 rounded-full hover:bg-pink-700 transition">
+                                    <i class="fab fa-dribbble"></i>
+                                </a>
+                                <a href="#" class="bg-gray-800 text-white p-3 rounded-full hover:bg-gray-900 transition">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                                <a href="#" class="bg-red-600 text-white p-3 rounded-full hover:bg-red-700 transition">
+                                    <i class="fab fa-behance"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <span class="text-xl font-bold text-blue-400">DEV<span class="text-white">GRAPH</span></span>
+                    <p class="text-gray-400 mt-2">Créateur d'expériences numériques exceptionnelles</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#accueil" class="text-gray-400 hover:text-white transition">Accueil</a>
+                    <a href="#competences" class="text-gray-400 hover:text-white transition">Compétences</a>
+                    <a href="#portfolio" class="text-gray-400 hover:text-white transition">Portfolio</a>
+                    <a href="#contact" class="text-gray-400 hover:text-white transition">Contact</a>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 mb-4 md:mb-0">© 2023 DevGraph. Tous droits réservés.</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-dribbble"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menu mobile toggle
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Filtrage du portfolio
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Retirer la classe active de tous les boutons
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('active', 'bg-blue-600', 'text-white');
+                    btn.classList.add('bg-gray-200', 'text-gray-700');
+                });
+                
+                // Ajouter la classe active au bouton cliqué
+                button.classList.add('active', 'bg-blue-600', 'text-white');
+                button.classList.remove('bg-gray-200', 'text-gray-700');
+                
+                const filterValue = button.getAttribute('data-filter');
+                
+                portfolioItems.forEach(item => {
+                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Animation au défilement
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.animate-fade-in');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.2;
+                
+                if (elementPosition < screenPosition) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        };
+
+        window.addEventListener('scroll', animateOnScroll);
+        document.addEventListener('DOMContentLoaded', animateOnScroll);
+
+        // Gestion du formulaire de contact
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Ici, vous pourriez ajouter la logique pour envoyer le formulaire
+            alert('Merci pour votre message ! Je vous répondrai dès que possible.');
+            
+            // Réinitialiser le formulaire
+            this.reset();
+        });
+
+        // Smooth scrolling pour les liens de navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Fermer le menu mobile si ouvert
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

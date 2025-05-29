@@ -1,0 +1,6 @@
+[2025-05-27 20:47:14] [INFO] [Connexion] Connexion établie à la base de données based, table utilisateurs
+[2025-05-27 20:47:14] [INFO] [Selection] Sélection de tous les enregistrements de utilisateurs
+[2025-05-27 20:47:14] [INFO] [Export] Export JSON réussi : ./exportation/export_complet.json
+[2025-05-27 20:51:40] [INFO] [Connexion] Connexion établie à la base de données based, table utilisateurs
+[2025-05-27 20:51:40] [INFO] [Selection] Sélection de tous les enregistrements de utilisateurs
+[2025-05-27 20:51:40] [INFO] [Export] Export JSON réussi : ./exportation/utilisateurs.json

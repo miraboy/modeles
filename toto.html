@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tests de la classe Validateur PHP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .test-section {
+            display: none;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        .test-section.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #4f46e5;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+            transform: translateY(-2px);
+        }
+
+        .results {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 12px;
+            background: #f8fafc;
+            border-left: 4px solid #4f46e5;
+        }
+
+        .results h3 {
+            color: #4f46e5;
+            margin-bottom: 15px;
+        }
+
+        .success {
+            background: #ecfdf5;
+            border-left-color: #10b981;
+            color: #065f46;
+        }
+
+        .error {
+            background: #fef2f2;
+            border-left-color: #ef4444;
+            color: #991b1b;
+        }
+
+        .warning {
+            background: #fffbeb;
+            border-left-color: #f59e0b;
+            color: #92400e;
+        }
+
+        .info {
+            background: #eff6ff;
+            border-left-color: #3b82f6;
+            color: #1e40af;
+        }
+
+        .code-block {
+            background: #1f2937;
+            color: #e5e7eb;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e5e7eb;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            transition: width 0.5s ease;
+            border-radius: 3px;
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .test-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+        }
+
+        .test-card h4 {
+            color: #4f46e5;
+            margin-bottom: 10px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 2px;
+        }
+
+        .badge-success { background: #dcfce7; color: #166534; }
+        .badge-error { background: #fee2e2; color: #991b1b; }
+        .badge-warning { background: #fef3c7; color: #92400e; }
+        .badge-info { background: #dbeafe; color: #1e40af; }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4f46e5;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .animated-bg {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header animated-bg">
+            <h1>🧪 Tests Validateur PHP</h1>
+            <p>Interface de test complète pour la classe Validateur</p>
+        </div>
+
+        <div class="content">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar" style="width: 10%"></div>
+            </div>
+
+            <!-- Section 1: Introduction -->
+            <div class="test-section active" id="section-1">
+                <div class="section-title">
+                    <div class="section-icon">1</div>
+                    Introduction et présentation
+                </div>
+                
+                <div class="test-card">
+                    <h4>🎯 Objectif des tests</h4>
+                    <p>Cette interface permet de tester toutes les fonctionnalités de la classe Validateur PHP de manière interactive.</p>
+                    
+                    <h4 style="margin-top: 20px;">📋 Plan des tests</h4>
+                    <ol style="margin-left: 20px; margin-top: 10px;">
+                        <li>Validation basique avec détection automatique</li>
+                        <li>Règles natives (required, email, tel, etc.)</li>
+                        <li>Messages personnalisés</li>
+                        <li>Règles personnalisées</li>
+                        <li>Gestion des erreurs</li>
+                        <li>Validation combinée</li>
+                        <li>Interface fluide</li>
+                        <li>Tests de performance</li>
+                        <li>Cas d'usage avancés</li>
+                        <li>Récapitulatif final</li>
+                    </ol>
+                </div>
+
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-number">10</div>
+                        <div class="stat-label">Sections de test</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">25+</div>
+                        <div class="stat-label">Fonctionnalités</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">12</div>
+                        <div class="stat-label">Règles natives</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Validation basique -->
+            <div class="test-section" id="section-2">
+                <div class="section-title">
+                    <div class="section-icon">2</div>
+                    Validation basique avec détection automatique
+                </div>
+
+                <div class="test-grid">
+                    <div class="test-card">
+                        <h4>Test de détection automatique</h4>
+                        <div class="form-group">
+                            <label>Email utilisateur</label>
+                            <input type="text" id="auto-email" value="test@example.com" placeholder="Entrez un email">
+                        </div>
+                        <div class="form-group">
+                            <label>Numéro de téléphone</label>
+                            <input type="text" id="auto-phone" value="0123456789" placeholder="Numéro de téléphone">
+                        </div>
+                        <div class="form-group">
+                            <label>Site web</label>
+                            <input type="text" id="auto-website" value="https://example.com" placeholder="URL du site">
+                        </div>
+                        <div class="form-group">
+                            <label>Date de naissance</label>
+                            <input type="text" id="auto-birthdate" value="1990-01-01" placeholder="YYYY-MM-DD">
+                        </div>
+                        <div class="form-group">
+                            <label>Âge</label>
+                            <input type="text" id="auto-age" value="25" placeholder="Âge numérique">
+                        </div>
+                        <button class="btn btn-primary" onclick="testerDetectionAutomatique()">
+                            🔍 Tester la détection automatique
+                        </button>
+                    </div>
+
+                    <div class="test-card">
+                        <h4>Code PHP utilisé</h4>
+                        <div class="code-block">
+$validateur = new Validateur();
+$donnees = [
+    'user_email' => 'test@example.com',
+    'phone_number' => '0123456789',
+    'website_url' => 'https://example.com',
+    'birth_date' => '1990-01-01',
+    'age' => '25'
+];
+
+$validateur->setDonnees($donnees);
+$resultat = $validateur->valider(); // Détection auto
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results" id="auto-results" style="display: none;">
+                    <h3>Résultats de la détection automatique</h3>
+                    <div id="auto-content"></div>
+                </div>
+            </div>
+
+            <!-- Section 3: Règles natives -->
+            <div class="test-section" id="section-3">
+                <div class="section-title">
+                    <div class="section-icon">3</div>
+                    Test des règles natives
+                </div>
+
+                <div class="test-grid">
+                    <div class="test-card">
+                        <h4>Tests individuels des règles</h4>
+                        
+                        <div class="form-group">
+                            <label>Required (obligatoire)</label>
+                            <input type="text" id="rule-required" placeholder="Laissez vide pour tester">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="text" id="rule-email" value="invalid-email" placeholder="Format email">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Téléphone</label>
+                            <input type="text" id="rule-tel" value="123" placeholder="Numéro de téléphone">
+                        </div>
+
+                        <div class="form-group">
+                            <label>URL</label>
+                            <input type="text" id="rule-url" value="not-a-url" placeholder="URL valide">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Numérique</label>
+                            <input type="text" id="rule-numeric" value="abc" placeholder="Nombre">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Entier</label>
+                            <input type="text" id="rule-integer" value="12.5" placeholder="Nombre entier">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Min (5 caractères)</label>
+                            <input type="text" id="rule-min" value="ab" placeholder="Au moins 5 caractères">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Max (10 caractères)</label>
+                            <input type="text" id="rule-max" value="texte très long qui dépasse" placeholder="Maximum 10 caractères">
+                        </div>
+
+                        <button class="btn btn-primary" onclick="testerReglesNatives()">
+                            ⚡ Tester toutes les règles
+                        </button>
+                    </div>
+
+                    <div class="test-card">
+                        <h4>Règles avancées</h4>
+                        
+                        <div class="form-group">
+                            <label>Regex (lettres majuscules uniquement)</label>
+                            <input type="text" id="rule-regex" value="Hello123" placeholder="LETTRES MAJUSCULES">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Date (format Y-m-d)</label>
+                            <input type="text" id="rule-date" value="2024/01/01" placeholder="YYYY-MM-DD">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Alpha (lettres seulement)</label>
+                            <input type="text" id="rule-alpha" value="Hello123" placeholder="Lettres uniquement">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Alphanumeric</label>
+                            <input type="text" id="rule-alphanumeric" value="Hello-123" placeholder="Lettres et chiffres">
+                        </div>
+
+                        <button class="btn btn-success" onclick="testerReglesAvancees()">
+                            🎯 Tester règles avancées
+                        </button>
+                    </div>
+                </div>
+
+                <div class="results" id="native-results" style="display: none;">
+                    <h3>Résultats des tests de règles natives</h3>
+                    <div id="native-content"></div>
+                </div>
+            </div>
+
+            <!-- Section 4: Messages personnalisés -->
+            <div class="test-section" id="section-4">
+                <div class="section-title">
+                    <div class="section-icon">4</div>
+                    Messages personnalisés
+                </div>
+
+                <div class="test-grid">
+                    <div class="test-card">
+                        <h4>Personnalisation des messages</h4>
+                        
+                        <div class="form-group">
+                            <label>Nom (sera vide pour tester)</label>
+                            <input type="text" id="custom-nom" placeholder="Nom requis">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Email (format invalide)</label>
+                            <input type="text" id="custom-email" value="email-invalide" placeholder="Email">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Mot de passe (trop court)</label>
+                            <input type="text" id="custom-password" value="123" placeholder="Mot de passe">
+                        </div>
+
+                        <button class="btn btn-primary" onclick="testerMessagesPersonnalises()">
+                            💬 Tester messages personnalisés
+                        </button>
+                    </div>
+
+                    <div class="test-card">
+                        <h4>Messages utilisés</h4>
+                        <div class="code-block">
+$messages = [
+    'nom.required' => '⚠️ Le nom est obligatoire pour continuer.',
+    'email' => '📧 Veuillez saisir une adresse email valide.',
+    'mot_de_passe.min' => '🔒 Le mot de passe doit contenir au minimum :valeur caractères pour votre sécurité.'
+];
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results" id="custom-results" style="display: none;">
+                    <h3>Résultats avec messages personnalisés</h3>
+                    <div id="custom-content"></div>
+                </div>
+            </div>
+
+            <!-- Section 5: Règles personnalisées -->
+            <div class="test-section" id="section-5">
+                <div class="section-title">
+                    <div class="section-icon">5</div>
+                    Règles personnalisées
+                </div>
+
+                <div class="test-grid">
+                    <div class="test-card">
+                        <h4>Création de règles métier</h4>
+                        
+                        <div class="form-group">
+                            <label>Âge (test majorité)</label>
+                            <input type="text" id="custom-age" value="16" placeholder="Âge">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Mot de passe (test sécurité)</label>
+                            <input type="password" id="custom-strongpwd" value="simple" placeholder="Mot de passe fort">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Code postal français</label>
+                            <input type="text" id="custom-zipcode" value="1234" placeholder="Code postal 5 chiffres">
+                        </div>
+
+                        <button class="btn btn-primary" onclick="testerReglesPersonnalisees()">
+                            🛠️ Tester règles personnalisées
+                        </button>
+                    </div>
+
+                    <div class="test-card">
+                        <h4>Règles créées</h4>
+                        <div class="code-block">
+// Majorité française
+$validateur->ajouterRegles('majeurFr', function($valeur) {
+    return is_numeric($valeur) && (int)$valeur >= 18;
+});
+
+// Mot de passe fort
+$validateur->ajouterRegles('motDePasseFort', function($valeur) {
+    return strlen($valeur) >= 8 
+        && preg_match('/[A-Z]/', $valeur)
+        && preg_match('/[a-z]/', $valeur) 
+        && preg_match('/[0-9]/', $valeur);
+});
+
+// Code postal français
+$validateur->ajouterRegles('codePostalFr', function($valeur) {
+    return preg_match('/^[0-9]{5}$/', $valeur);
+});
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results" id="custom-rules-results" style="display: none;">
+                    <h3>Résultats des règles personnalisées</h3>
+                    <div id="custom-rules-content"></div>
+                </div>
+            </div>
+
+            <!-- Section 6: Gestion des erreurs -->
+            <div class="test-section" id="section-6">
+                <div class="section-title">
+                    <div class="section-icon">6</div>
+                    Gestion avancée des erreurs
+                </div>
+
+                <div class="test-grid">
+                    <div class="test-card">
+                        <h4>Test des niveaux d'erreur</h4>
+                        
+                        <div class="form-group">
+                            <label>Données avec erreurs multiples</label>
+                            <textarea id="error-data" rows="6">{
+    "nom": "",
+    "email": "invalid",
+    "age": "abc",
+    "telephone": "123"
+}</textarea>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="testerGestionErreurs()">
+                            🚨 Générer erreurs multiples
+                        </button>
+                    </div>
+
+                    <div class="test-card">
+                        <h4>Structure des erreurs</h4>
+                        <div class="code-block">
+// Chaque erreur contient:
+[
+    'niveau' => 'erreur|warning|info',
+    'message' => 'Message d\'erreur',
+    'timestamp' => '2024-01-15 14:30:25',
+    'datetime' => DateTime Object
+]
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results" id="error-results" style="display: none;">
+                    <h3>Analyse détaillée des erreurs</h3>
+                    <div id="error-content"></div>
+                </div>
+            </div>
+
+            <!-- Section 7: Validation combinée -->
+            <div class="test-section" id="section-7">
+                <div class="section-title">
+                    <div class="section-icon">7</div>
+                    Validation combinée et complexe
+                </div>
+
+                <div class="test-grid">
+                    <div class="test-card">
+                        <h4>Combinaison de règles</h4>
+                        
+                        <div class="form-group">
+                            <label>Email professionnel</label>
+                            <input type="text" id="combo-email" value="user@gmail.com" placeholder="Email entreprise">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Code sécurisé</label>
+                            <input type="text" id="combo-code" value="ABC" placeholder="Code alphanumérique 8 chars">
+                        </div>
+
+                        <button class="btn btn-primary" onclick="testerValidationCombinee()">
+                            🔗 Tester validation combinée
+                        </button>
+                    </div>
+
+                    <div class="test-card">
+                        <h4>Règles combinées</h4>
+                        <div class="code-block">
+// Email professionnel
+$validateur->combinerRegles('email', [
+    'required',
+    'email',
+    'regex:/^[a-zA-Z0-9._%+-]+@entreprise\.com$/'
+]);
+
+// Code sécurisé
+$validateur->combinerRegles('code', [
+    'required',
+    'alphanumeric',
+    'regex:/^[A-Z0-9]{8}$/'
+]);
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results" id="combo-results" style="display: none;">
+                    <h3>Résultats de la validation combinée</h3>
+                    <div id="combo-content"></div>
+                </div>
+            </div>
+
+            <!-- Section 8: Interface fluide -->
+            <div class="test-section" id="section-8">
+                <div class="section-title">
+                    <div class="section-icon">8</div>
+                    Interface fluide et chaînage
+                </div>
+
+                <div class="test-grid">
+                    <div class="test-card">
+                        <h4>Test de l'interface fluide</h4>
+                        
+                        <div class="form-group">
+                            <label>Prénom</label>
+                            <input type="text" id="fluide-prenom" value="Jean" placeholder="Prénom">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="text" id="fluide-email" value="jean@example.com" placeholder="Email">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Âge</label>
+                            <input type="text" id="fluide-age" value="25" placeholder="Âge">
+                        </div>
+
+                        <button class="btn btn-primary" onclick="testerInterfaceFluide()">
+                            ⛓️ Tester chaînage des méthodes
+                        </button>
+                    </div>
+
+                    <div class="test-card">
+                        <h4>Code en chaînage</h4>
+                        <div class="code-block">
+$resultat = (new Validateur())
+    ->setDonnees($donnees)
+    ->setRegles([
+        'prenom' => 'required|alpha',
+        'email' => 'required|email',
+        'age' => 'required|numeric|min:18'
+    ])
+    ->setMessagesPersonnalises($messages)
+    ->valider();
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results" id="fluide-results" style="display: none;">
+                    <h3>Résultats de l'interface fluide</h3>
+                    <div id="fluide-content"></div>
+                </div>
+            </div>
+
+            <!-- Section 9: Performance -->
+            <div class="test-section" id="section-9">
+                <div class="section-title">
+                    <div class="section-icon">9</div>
+                    Tests de performance
+                </div>
+
+                <div class="test-grid">
+                    <div class="test-card">
+                        <h4>Benchmark de validation</h4>
+                        
+                        <div class="form-group">
+                            <label>Nombre d'enregistrements à tester</label>
+                            <select id="perf-count">
+                                <option value="100">100 enregistrements</option>
+                                <option value="500">500 enregistrements</option>
+                                <option value="1000" selected>1000 enregistrements</option>
+                                <option value="5000">5000 enregistrements</option>
+                            </select>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="testerPerformance()">
+                            ⚡ Lancer le benchmark
+                        </button>
+                    </div>
+
+                    <div class="test-card">
+                        <h4>Métriques mesurées</h4>
+                        <ul style="margin-left: 20px;">
+                            <li>Temps d'exécution total</li>
+                            <li>Temps par enregistrement</li>
+                            <li>Utilisation mémoire</li>
+                            <li>Nombre d'erreurs détectées</li>
+                            <li>Taux de réussite</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="results" id="perf-results" style="display: none;">
+                    <h3>Résultats du benchmark</h3>
