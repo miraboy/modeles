@@ -36,7 +36,7 @@ require_once 'Validateur.php';
 $validateur = new Validateur();
 ```
 
-## Utilisation basique
+## Utilisation basique 
 
 ### Validation simple avec détection automatique
 
@@ -458,6 +458,11 @@ $groupes = [
 $validateur = new ValidateurCascade();
 $validateur->setDonnees($donnees)->validerEnCascade($groupes);
 ```
+### ✅ Résumé des ajouts et finalisations :
+- `validerNewRegle` finalisée avec un message d'erreur personnalisé si la règle échoue.
+- Méthode `sauvegarderReglesPersonnalisees()` ajoutée pour écrire les règles dans un fichier PHP.
+- Méthode `exporterCallable()` ajoutée pour extraire le code source des closures personnalisées.
+- Méthode `chargerReglesPersonnalisees()` pour recharger les règles à l'initialisation.
 
 ## API Reference
 

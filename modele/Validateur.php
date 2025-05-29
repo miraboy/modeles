@@ -450,30 +450,61 @@ class Validateur
 
     // ==================== PERSISTANCE DES RÈGLES ====================
 
-    /**
-     * Sauvegarde les règles personnalisées dans un fichier
-     */
-    protected function sauvegarderReglesPersonnalisees(): void
-    {
-        $contenu = "<?php\n\n// Règles personnalisées générées automatiquement\n";
-        $contenu .= "// Date de génération: " . date('Y-m-d H:i:s') . "\n\n";
-        $contenu .= "return " . var_export(self::$reglesPersonnalisees, true) . ";\n";
-
-        file_put_contents($this->fichierRegles, $contenu);
+/**
+ * Sauvegarde les règles personnalisées dans un fichier
+ * (Note : nécessite que les fonctions soient sérialisables ou enregistrées sous forme de code PHP)
+ */
+protected function sauvegarderReglesPersonnalisees(): void
+{
+    $contenu = "<?php\n\nreturn [\n";
+    foreach (self::$reglesPersonnalisees as $nom => $fonction) {
+        if (is_callable($fonction) && is_string($ref = $this->exporterCallable($fonction))) {
+            $contenu .= "    '$nom' => $ref,\n";
+        } else {
+            $this->ajouterErreur('system', self::NIVEAU_WARNING, "Impossible de sauvegarder la règle personnalisée '$nom'.");
+        }
     }
+    $contenu .= "];\n";
 
-    /**
-     * Charge les règles personnalisées depuis le fichier
-     */
-    protected function chargerReglesPersonnalisees(): void
-    {
-        if (file_exists($this->fichierRegles)) {
-            $regles = include $this->fichierRegles;
-            if (is_array($regles)) {
-                self::$reglesPersonnalisees = array_merge(self::$reglesPersonnalisees, $regles);
+    file_put_contents($this->fichierRegles, $contenu);
+}
+
+/**
+ * Exporte un callable sous forme de code PHP (limité aux closures simples)
+ */
+protected function exporterCallable(callable $callable): ?string
+{
+    // Exporter uniquement les closures simples (pas de dépendances)
+    if ($callable instanceof \Closure) {
+        $ref = new \ReflectionFunction($callable);
+        $fichier = file($ref->getFileName());
+        $lignes = array_slice($fichier, $ref->getStartLine() - 1, $ref->getEndLine() - $ref->getStartLine() + 1);
+        $code = implode("", $lignes);
+        if (preg_match('/function\s*\(.*\)\s*{.*}/s', $code, $matches)) {
+            return $matches[0];
+        }
+    }
+    return null;
+}
+
+/**
+ * Charge les règles personnalisées depuis un fichier
+ */
+public function chargerReglesPersonnalisees(): void
+{
+    if (file_exists($this->fichierRegles)) {
+        $regles = include $this->fichierRegles;
+        if (is_array($regles)) {
+            foreach ($regles as $nom => $fonction) {
+                if (is_callable($fonction)) {
+                    self::$reglesPersonnalisees[$nom] = $fonction;
+                } else {
+                    $this->ajouterErreur('system', self::NIVEAU_WARNING, "La règle personnalisée '$nom' est invalide.");
+                }
             }
         }
     }
+}
 
     // ==================== MÉTHODES UTILITAIRES ====================
 
