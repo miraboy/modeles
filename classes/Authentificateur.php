@@ -3,7 +3,7 @@
  * Classe Authentificateur - Gestion de l'authentification générique et réutilisable
  * Version améliorée avec compatibilité multi-SGBD et gestion d'erreurs renforcée
  * 
- * @author Développeur PHP Senior
+ * @author Sèkplon Mirabel  DOTOU
  * @version 2.0
  */
 class Authentificateur {
