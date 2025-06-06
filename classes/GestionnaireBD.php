@@ -65,7 +65,15 @@ class GestionnaireBD
     ];
     
     /**
-     * Constructeur
+     * Constructeur du gestionnaire de base de données.
+     *
+     * @param string $host Hôte de la base de données
+     * @param string $user Utilisateur
+     * @param string $pass Mot de passe
+     * @param string $baseDonnees Nom de la base de données
+     * @param string $table Nom de la table
+     * @param string $cheminJournal Chemin du fichier journal (optionnel)
+     * @throws GestionnaireBDException En cas d'échec de connexion
      */
     public function __construct($host, $user, $pass, $baseDonnees, $table, $cheminJournal = './logs/gestionnaireBD.log')
     {
@@ -105,11 +113,31 @@ class GestionnaireBD
      * @return string
      */
     public function getTable() { return $this->table; }
+
+    /**
+     * Récupère la liste des erreurs.
+     * @return array
+     */
     public function getErreurs() { return $this->erreurs; }
+
+    /**
+     * Récupère le chemin du fichier journal.
+     * @return string
+     */
     public function getCheminJournal() { return $this->cheminJournal; }
+
+    /**
+     * Récupère la structure de la table courante.
+     * @return array
+     */
     public function getStructure() { return $this->structure; }
     
     // SETTERS
+    /**
+     * Définit la table courante et recharge sa structure.
+     * @param string $table
+     * @return void
+     */
     public function setTable($table)
     {
         $this->table = $table;
@@ -117,6 +145,11 @@ class GestionnaireBD
         $this->journaliser('INFO', 'Configuration', "Table changée pour : {$table}");
     }
     
+    /**
+     * Définit le chemin du fichier journal.
+     * @param string $chemin
+     * @return void
+     */
     public function setCheminJournal($chemin)
     {
         $this->cheminJournal = $chemin;

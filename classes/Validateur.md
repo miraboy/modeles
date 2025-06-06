@@ -18,13 +18,15 @@
 La classe `Validateur` est une solution générique et extensible pour la validation de données en PHP. Elle offre un système complet de validation avec détection automatique des règles, support des règles personnalisées, et une gestion avancée des erreurs.
 
 ### Caractéristiques principales
-- ✅ **Règles natives**: Email, téléphone, URL, numérique, etc.
-- ✅ **Détection automatique**: Analyse les données pour appliquer les règles appropriées
-- ✅ **Règles personnalisées**: Ajout facile de nouvelles règles métier
-- ✅ **Messages personnalisés**: Customisation complète des messages d'erreur
-- ✅ **Gestion d'erreurs avancée**: Niveaux d'erreur, timestamps, stockage structuré
-- ✅ **Interface fluide**: Chaînage des méthodes pour une utilisation élégante
-- ✅ **Persistance**: Sauvegarde automatique des règles personnalisées
+- ✅ **Règles natives** : Email, téléphone, URL, numérique, etc.
+- ✅ **Détection automatique** : Analyse les données pour appliquer les règles appropriées
+- ✅ **Règles personnalisées** : Ajout facile de nouvelles règles métier
+- ✅ **Messages personnalisés** : Customisation complète des messages d'erreur
+- ✅ **Gestion d'erreurs avancée** : Niveaux d'erreur, timestamps, stockage structuré
+- ✅ **Interface fluide** : Chaînage des méthodes pour une utilisation élégante
+- ✅ **Persistance** : Sauvegarde automatique des règles personnalisées
+
+---
 
 ## Installation
 
@@ -35,6 +37,8 @@ require_once 'Validateur.php';
 // Créer une instance
 $validateur = new Validateur();
 ```
+
+---
 
 ## Utilisation basique 
 
@@ -83,6 +87,8 @@ $resultat = $validateur
     ->valider();
 ```
 
+---
+
 ## Configuration
 
 ### Setters (Interface fluide)
@@ -106,24 +112,26 @@ $erreurs = $validateur->getErreurs();                    // Récupérer toutes l
 $erreursChamp = $validateur->getErreursParChamp('nom');  // Erreurs d'un champ spécifique
 ```
 
+---
+
 ## Règles de validation
 
 ### Règles natives disponibles
 
-| Règle | Description | Exemple | Paramètre |
-|-------|-------------|---------|-----------|
-| `required` | Champ obligatoire | `required` | Non |
-| `email` | Adresse email valide | `email` | Non |
-| `tel` | Numéro de téléphone | `tel` | Non |
-| `url` | URL valide | `url` | Non |
-| `numeric` | Valeur numérique | `numeric` | Non |
-| `integer` | Nombre entier | `integer` | Non |
-| `min` | Longueur/valeur minimale | `min:5` | Oui |
-| `max` | Longueur/valeur maximale | `max:100` | Oui |
-| `regex` | Expression régulière | `regex:/^[A-Z]+$/` | Oui |
-| `date` | Date valide | `date:Y-m-d` | Optionnel |
-| `alpha` | Lettres uniquement | `alpha` | Non |
-| `alphanumeric` | Lettres et chiffres | `alphanumeric` | Non |
+| Règle         | Description                       | Exemple                   | Paramètre   |
+|---------------|-----------------------------------|---------------------------|-------------|
+| `required`    | Champ obligatoire                 | `required`                | Non         |
+| `email`       | Adresse email valide              | `email`                   | Non         |
+| `tel`         | Numéro de téléphone               | `tel`                     | Non         |
+| `url`         | URL valide                        | `url`                     | Non         |
+| `numeric`     | Valeur numérique                  | `numeric`                 | Non         |
+| `integer`     | Nombre entier                     | `integer`                 | Non         |
+| `min`         | Longueur/valeur minimale          | `min:5`                   | Oui         |
+| `max`         | Longueur/valeur maximale          | `max:100`                 | Oui         |
+| `regex`       | Expression régulière              | `regex:/^[A-Z]+$/`        | Oui         |
+| `date`        | Date valide                       | `date:Y-m-d`              | Optionnel   |
+| `alpha`       | Lettres uniquement                | `alpha`                   | Non         |
+| `alphanumeric`| Lettres et chiffres               | `alphanumeric`            | Non         |
 
 ### Syntaxe des règles
 
@@ -171,6 +179,8 @@ $donnees = [
 $validateur->setDonnees($donnees)->valider();
 ```
 
+---
+
 ## Messages personnalisés
 
 ### Messages par défaut
@@ -205,6 +215,8 @@ $validateur->setMessagesPersonnalises($messages);
 
 - `:champ` - Nom du champ validé
 - `:valeur` - Valeur du paramètre de la règle
+
+---
 
 ## Règles personnalisées
 
@@ -244,6 +256,8 @@ Les règles personnalisées sont automatiquement sauvegardées dans le fichier `
 // Changer le fichier de sauvegarde
 $validateur->setFichierRegles('mes_regles_custom.php');
 ```
+
+---
 
 ## Gestion des erreurs
 
@@ -295,6 +309,8 @@ $validateur->ajouterErreur(
 );
 ```
 
+---
+
 ## Méthodes utilitaires
 
 ### Vérification du statut
@@ -328,6 +344,8 @@ $valide = $validateur->combinerRegles('email', [
     'regex:/^[a-zA-Z0-9._%+-]+@entreprise\.com$/'
 ]);
 ```
+
+---
 
 ## Exemples avancés
 
@@ -458,27 +476,49 @@ $groupes = [
 $validateur = new ValidateurCascade();
 $validateur->setDonnees($donnees)->validerEnCascade($groupes);
 ```
-### ✅ Résumé des ajouts et finalisations :
-- `validerNewRegle` finalisée avec un message d'erreur personnalisé si la règle échoue.
-- Méthode `sauvegarderReglesPersonnalisees()` ajoutée pour écrire les règles dans un fichier PHP.
-- Méthode `exporterCallable()` ajoutée pour extraire le code source des closures personnalisées.
-- Méthode `chargerReglesPersonnalisees()` pour recharger les règles à l'initialisation.
+
+---
 
 ## API Reference
 
 ### Constructeur
 
 ```php
+/**
+ * Initialise le validateur et charge les règles personnalisées existantes.
+ */
 public function __construct()
 ```
-Initialise le validateur et charge les règles personnalisées existantes.
 
 ### Méthodes de configuration
 
 ```php
+/**
+ * Définit les données à valider.
+ * @param array $donnees
+ * @return self
+ */
 public function setDonnees(array $donnees): self
+
+/**
+ * Définit les règles de validation.
+ * @param array $regles
+ * @return self
+ */
 public function setRegles(array $regles): self  
+
+/**
+ * Définit les messages personnalisés.
+ * @param array $messages
+ * @return self
+ */
 public function setMessagesPersonnalises(array $messages): self
+
+/**
+ * Définit le fichier pour les règles personnalisées.
+ * @param string $chemin
+ * @return void
+ */
 public function setFichierRegles(string $chemin): void
 ```
 
@@ -497,7 +537,7 @@ public function getErreursParChamp(string $champ): array
 ```php
 public function valider(array $regles = []): bool
 public function combinerRegles(string $champ, array $regles): bool
-protected function detecterRegles(): array
+public function detecterRegles(): array
 ```
 
 ### Gestion des erreurs

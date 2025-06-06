@@ -41,25 +41,43 @@ class Validateur
         'alphanumeric' => 'Le champ :champ ne doit contenir que des lettres et des chiffres.',
     ];
 
+    /**
+     * Constructeur du validateur.
+     */
     public function __construct()
     {
         $this->chargerReglesPersonnalisees();
     }
 
     // ==================== SETTERS ====================
-    
+
+    /**
+     * Définit les données à valider.
+     * @param array $donnees
+     * @return self
+     */
     public function setDonnees(array $donnees): self
     {
         $this->donnees = $donnees;
         return $this;
     }
 
+    /**
+     * Définit les règles de validation.
+     * @param array $regles
+     * @return self
+     */
     public function setRegles(array $regles): self
     {
         $this->regles = $regles;
         return $this;
     }
 
+    /**
+     * Définit les messages personnalisés.
+     * @param array $messages
+     * @return self
+     */
     public function setMessagesPersonnalises(array $messages): self
     {
         $this->messagesPersonnalises = array_merge($this->messagesPersonnalises, $messages);
@@ -68,26 +86,47 @@ class Validateur
 
     // ==================== GETTERS ====================
 
+    /**
+     * Retourne les données à valider.
+     * @return array
+     */
     public function getDonnees(): array
     {
         return $this->donnees;
     }
 
+    /**
+     * Retourne les règles de validation.
+     * @return array
+     */
     public function getRegles(): array
     {
         return $this->regles;
     }
 
+    /**
+     * Retourne les messages personnalisés.
+     * @return array
+     */
     public function getMessagesPersonnalises(): array
     {
         return $this->messagesPersonnalises;
     }
 
+    /**
+     * Retourne toutes les erreurs de validation.
+     * @return array
+     */
     public function getErreurs(): array
     {
         return $this->erreurs;
     }
 
+    /**
+     * Retourne les erreurs pour un champ donné.
+     * @param string $champ
+     * @return array
+     */
     public function getErreursParChamp(string $champ): array
     {
         return $this->erreurs[$champ] ?? [];
@@ -96,7 +135,9 @@ class Validateur
     // ==================== VALIDATION PRINCIPALE ====================
 
     /**
-     * Méthode principale de validation
+     * Lance la validation des données selon les règles.
+     * @param array $regles Règles à utiliser (optionnel)
+     * @return bool True si aucune erreur, false sinon
      */
     public function valider(array $regles = []): bool
     {
@@ -155,7 +196,7 @@ class Validateur
     }
 
     /**
-     * Détecte automatiquement les règles basées sur les données
+     * Détecte automatiquement les règles à partir des données
      */
     public function detecterRegles(): array
     {
@@ -350,6 +391,13 @@ class Validateur
 
     // ==================== GESTION DES ERREURS ====================
 
+    /**
+     * Ajoute une erreur pour un champ.
+     * @param string $champ
+     * @param string $niveau
+     * @param string $message
+     * @return void
+     */
     public function ajouterErreur(string $champ, string $niveau, string $message): void
     {
         if (!isset($this->erreurs[$champ])) {
@@ -395,7 +443,10 @@ class Validateur
     // ==================== RÈGLES PERSONNALISÉES ====================
 
     /**
-     * Ajoute une nouvelle règle personnalisée
+     * Ajoute une règle personnalisée.
+     * @param string $titre Nom de la règle
+     * @param callable $fonction Fonction de validation
+     * @return bool
      */
     public function ajouterRegles(string $titre, callable $fonction): bool
     {
@@ -411,7 +462,12 @@ class Validateur
     }
 
     /**
-     * Valide avec une règle personnalisée
+     * Valide un champ avec une règle personnalisée.
+     * @param string $champ
+     * @param string $titre
+     * @param mixed $valeur
+     * @param mixed $parametre
+     * @return bool
      */
     public function validerNewRegle(string $champ, string $titre, $valeur, $parametre = null): bool
     {
@@ -432,7 +488,10 @@ class Validateur
     }
 
     /**
-     * Combine plusieurs règles pour un champ
+     * Combine plusieurs règles pour un champ.
+     * @param string $champ
+     * @param array $regles
+     * @return bool
      */
     public function combinerRegles(string $champ, array $regles): bool
     {
@@ -448,68 +507,54 @@ class Validateur
         return $toutesValides;
     }
 
-    // ==================== PERSISTANCE DES RÈGLES ====================
-
-/**
- * Sauvegarde les règles personnalisées dans un fichier
- * (Note : nécessite que les fonctions soient sérialisables ou enregistrées sous forme de code PHP)
- */
-protected function sauvegarderReglesPersonnalisees(): void
-{
-    $contenu = "<?php\n\nreturn [\n";
-    foreach (self::$reglesPersonnalisees as $nom => $fonction) {
-        if (is_callable($fonction) && is_string($ref = $this->exporterCallable($fonction))) {
-            $contenu .= "    '$nom' => $ref,\n";
-        } else {
-            $this->ajouterErreur('system', self::NIVEAU_WARNING, "Impossible de sauvegarder la règle personnalisée '$nom'.");
-        }
-    }
-    $contenu .= "];\n";
-
-    file_put_contents($this->fichierRegles, $contenu);
-}
-
-/**
- * Exporte un callable sous forme de code PHP (limité aux closures simples)
- */
-protected function exporterCallable(callable $callable): ?string
-{
-    // Exporter uniquement les closures simples (pas de dépendances)
-    if ($callable instanceof \Closure) {
-        $ref = new \ReflectionFunction($callable);
-        $fichier = file($ref->getFileName());
-        $lignes = array_slice($fichier, $ref->getStartLine() - 1, $ref->getEndLine() - $ref->getStartLine() + 1);
-        $code = implode("", $lignes);
-        if (preg_match('/function\s*\(.*\)\s*{.*}/s', $code, $matches)) {
-            return $matches[0];
-        }
-    }
-    return null;
-}
-
-/**
- * Charge les règles personnalisées depuis un fichier
- */
-public function chargerReglesPersonnalisees(): void
-{
-    if (file_exists($this->fichierRegles)) {
-        $regles = include $this->fichierRegles;
-        if (is_array($regles)) {
-            foreach ($regles as $nom => $fonction) {
-                if (is_callable($fonction)) {
-                    self::$reglesPersonnalisees[$nom] = $fonction;
-                } else {
-                    $this->ajouterErreur('system', self::NIVEAU_WARNING, "La règle personnalisée '$nom' est invalide.");
+    /**
+     * Charge les règles personnalisées depuis un fichier.
+     * @return void
+     */
+    public function chargerReglesPersonnalisees(): void
+    {
+        if (file_exists($this->fichierRegles)) {
+            $regles = include $this->fichierRegles;
+            if (is_array($regles)) {
+                foreach ($regles as $nom => $fonction) {
+                    if (is_callable($fonction)) {
+                        self::$reglesPersonnalisees[$nom] = $fonction;
+                    } else {
+                        $this->ajouterErreur('system', self::NIVEAU_WARNING, "La règle personnalisée '$nom' est invalide.");
+                    }
                 }
             }
         }
     }
-}
+
+    /**
+     * Sauvegarde les règles personnalisées dans le fichier défini.
+     * @return void
+     */
+    protected function sauvegarderReglesPersonnalisees(): void
+    {
+        $contenu = "<?php\n\nreturn [\n";
+        foreach (self::$reglesPersonnalisees as $nom => $fonction) {
+            if (is_string($fonction)) {
+                // Si la fonction est une string (nom de fonction globale)
+                $contenu .= "    '$nom' => '$fonction',\n";
+            } elseif ($fonction instanceof \Closure) {
+                // Les closures ne peuvent pas être exportées directement
+                $contenu .= "    // '$nom' => function() { /* Closure non exportable */ },\n";
+            } else {
+                // Autre type de callable
+                $contenu .= "    // '$nom' => /* Callable non exportable */,\n";
+            }
+        }
+        $contenu .= "];\n";
+        file_put_contents($this->fichierRegles, $contenu);
+    }
 
     // ==================== MÉTHODES UTILITAIRES ====================
 
     /**
-     * Vérifie si la validation a échoué
+     * Indique si la validation a échoué.
+     * @return bool
      */
     public function aEchoue(): bool
     {
@@ -517,7 +562,9 @@ public function chargerReglesPersonnalisees(): void
     }
 
     /**
-     * Récupère le premier message d'erreur pour un champ
+     * Retourne le premier message d'erreur pour un champ.
+     * @param string $champ
+     * @return string|null
      */
     public function premierMessageErreur(string $champ): ?string
     {
@@ -525,7 +572,8 @@ public function chargerReglesPersonnalisees(): void
     }
 
     /**
-     * Récupère tous les messages d'erreur sous forme de tableau plat
+     * Retourne tous les messages d'erreur sous forme de tableau plat.
+     * @return array
      */
     public function getTousLesMessages(): array
     {
@@ -539,7 +587,8 @@ public function chargerReglesPersonnalisees(): void
     }
 
     /**
-     * Efface toutes les erreurs
+     * Efface toutes les erreurs de validation.
+     * @return void
      */
     public function effacerErreurs(): void
     {
@@ -547,7 +596,9 @@ public function chargerReglesPersonnalisees(): void
     }
 
     /**
-     * Définit le fichier pour les règles personnalisées
+     * Définit le fichier pour les règles personnalisées.
+     * @param string $chemin
+     * @return void
      */
     public function setFichierRegles(string $chemin): void
     {
