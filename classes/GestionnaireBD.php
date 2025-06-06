@@ -5,6 +5,12 @@
  */
 class GestionnaireBDException extends Exception
 {
+     /**
+     * Constructeur de l'exception personnalisée
+     * @param string $message
+     * @param int $code
+     * @param Exception|null $previous
+     */
     public function __construct($message, $code = 0, Exception $previous = null)
     {
         parent::__construct($message, $code, $previous);
@@ -94,6 +100,10 @@ class GestionnaireBD
     }
     
     // GETTERS
+    /**
+     * Récupère le nom de la table courante.
+     * @return string
+     */
     public function getTable() { return $this->table; }
     public function getErreurs() { return $this->erreurs; }
     public function getCheminJournal() { return $this->cheminJournal; }
