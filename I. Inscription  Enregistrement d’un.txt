@@ -1,0 +1,6 @@
+partons sur un projet php ...
+en tant que Chefs de projet et Développeurs seniors expérimenté, rédige le cahier de charge pour la création d'une classe générique qui gère l'authentification entièrement. les développeurs pourront l'utiliser et en une ligne de code pourront accomplir les tâches d'authentification.
+les noms de fonction , de variable en Français et intuitif , prise en main facile. 
+penses aussi à une structure de table de donnée "universelle". le développeur pour spécifier s'il veut que tu crées une nouvelle table pour l'authentification ou précise la table que tu vas utiliser.
+par contre tu gères que l'authentification pas la gestion role etc.
+l'authentification que la classe gère est le "login et mot passe"

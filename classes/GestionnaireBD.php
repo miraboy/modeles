@@ -61,7 +61,7 @@ class GestionnaireBD
     /**
      * Constructeur
      */
-    public function __construct($host, $user, $pass, $baseDonnees, $table, $cheminJournal = './logs/mon_journal.log')
+    public function __construct($host, $user, $pass, $baseDonnees, $table, $cheminJournal = './logs/gestionnaireBD.log')
     {
         $this->host = $host;
         $this->user = $user;
